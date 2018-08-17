@@ -1,0 +1,24 @@
+{
+  "name": "RNTemplate",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "buffer": "^5.2.0",
+    "native-base": "~2.6",
+    "react": "16.3.1",
+    "react-native": "0.55.4",
+    "react-native-config": "^0.11.5",
+    "react-native-device-info": "^0.22.4",
+    "react-native-version-number": "^0.3.4",
+    "react-navigation": "^2.11.2",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-persist": "^5.10.0",
+    "redux-saga": "^0.16.0"
+  },
+  "devDependencies": {}
+}
