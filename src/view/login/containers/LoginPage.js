@@ -85,18 +85,18 @@ class LoginPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    hasError: state.login.hasError,
-    error: state.login.error,
+    hasError: state.loginReducer.hasError,
+    error: state.loginReducer.error,
     isLoggingIn:
-      state.login.currentState === LoginStates.LOGIN_STATE_LOGGING_IN,
-    lastLoginError: state.login.hasError ? state.login.error : null,
+      state.loginReducer.currentState === LoginStates.LOGIN_STATE_LOGGING_IN,
+    lastLoginError: state.loginReducer.hasError ? state.loginReducer.error : null,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatchLoginRequest: (username, password) =>
-      dispatch(createLoginRequestAction({ username, password })),
+      dispatch(createLoginRequestAction({ username, password }))
   };
 }
 

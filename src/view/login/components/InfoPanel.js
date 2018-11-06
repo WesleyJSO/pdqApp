@@ -10,7 +10,8 @@ import { ActivityIndicator, StyleSheet, Alert } from 'react-native';
  *    that case, this field should contain {code, message}.
  */
 const InfoPanel = (props) => {
-  return (
+    console.log(`Rendering InfoPanel with props: ${JSON.stringify(props)}`)
+    return (
     <View
       style={{
         flexDirection: 'column',

@@ -6,7 +6,8 @@ const TopPanel = (props) => {
     <View style={styles.container}>
       <Image
         style={styles.image}
-        source={require('../../../../img/logo-example.png')}
+        source={require('../../../assets/PDQ_LOGO_TRASNPARENT.png')}
+        // source={require('../../../../img/logo-example.png')}
       />
     </View>
   );
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').width / 5,
+    height: Dimensions.get('window').width / 2,
     resizeMode: 'contain',
   },
 });

@@ -22,6 +22,7 @@ function* loginWorkerSaga(action) {
     yield console.log('User ' + action.payload.username + ' is logging in.');
 
     if (action.payload.username === '' && action.payload.password == '') {
+      console.log('Error while validating data at LoginSaga.')
       throw {
         code: 400,
         response: {
@@ -47,6 +48,7 @@ function* loginWorkerSaga(action) {
   } catch (error) {
     // what exactly is in the error object depends on the server
     // but if a response was received at all, it's in error.response
+    console.log(`Error at LoginSaga creating error action whit data:${JSON.stringify(error.response.data)}`)
     yield put(createLoginFailureAction(error.response.data));
   }
 }

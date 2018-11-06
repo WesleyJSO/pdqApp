@@ -1,6 +1,14 @@
 import { combineReducers } from 'redux';
 import { loginReducer } from './LoginReducer';
+import { searchOrdersReducer } from './SearchOrdersReducer'
+import { ordersListReducer } from './OrdersListReducer'
+import { homeReducer } from './HomeReducer'
+import { orderDetailReducer } from './OrderDetailReducer'
 
 export default combineReducers({
-  login: loginReducer,
+  loginReducer: loginReducer,
+  searchOrdersReducer: searchOrdersReducer,
+  homeReducer: homeReducer,
+  ordersListReducer: ordersListReducer,
+  orderDetailReducer: orderDetailReducer,
 });
