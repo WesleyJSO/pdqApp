@@ -5,7 +5,6 @@ import {
 } from '../actions/LoginAction';
 
 export function* logoutWatcherSaga() {
-  console.log('logout saga listening for requests');
   yield takeLatest('LOGOUT_REQUEST', logoutWorkerSaga);
 }
 

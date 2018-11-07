@@ -30,8 +30,8 @@ export function searchOrdersReducer(state = initialState, action) {
      */
     case 'SEARCH_ORDERS_REQUEST':
       return {
-        ...state,
-        searchOrdersQueryData: action.payload,
+      ...state,
+        queryData: action.payload.queryData,
         currentState: SearchOrdersStates.SEARCH_ORDERS_REQUESTED,
         hasError: false,
         error: null
@@ -42,7 +42,7 @@ export function searchOrdersReducer(state = initialState, action) {
     case 'SEARCH_ORDERS_SUCCESS':
       return {
         ...state,
-        searchOrdersQueryData: action.payload.searchOrdersQueryData,
+        ordersList: action.payload,
         currentState: SearchOrdersStates.SEARCH_ORDERS_SUCCEED,
         hasError: false,
         error: null

@@ -32,13 +32,12 @@ const _InfoPanel = props => {
         props.error && (
           <View style={{ alignItems: 'center' }}>
             <Text style={{ color: 'red' }}>
-              Houve um erro ao realizar o login.
+              {props.message}
             </Text>
             <Button
               danger
               style={{ marginLeft: 15, marginRight: 15, alignSelf: 'center' }}
               onPressOut={() => {
-                console.log('Here is the error:');
                 Alert.alert(
                   props.error.title || 'Erro desconhecido',
                   props.error.message || '[nenhuma mensagem informada]',

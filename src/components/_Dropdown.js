@@ -4,7 +4,7 @@ import { Dropdown } from 'react-native-material-dropdown' // https://github.com/
 const _Dropdown = props => {
   return (
     <Dropdown
-      style={{elevation: 5, padding: 0, margin: 0}}
+      style={{padding: 0, margin: 0}}
       label={props.label}
       data={props.data}
       value={props.value}

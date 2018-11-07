@@ -15,7 +15,6 @@ const initialState = {
 export function loginReducer(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN_REQUEST':
-      console.log(`Creating Login request action in loginReducer with payload:${JSON.stringify(action.payload)}`)
       return {
         ...state,
         username: action.payload.username,
@@ -25,7 +24,6 @@ export function loginReducer(state = initialState, action) {
         error: null,
       };
     case 'LOGIN_SUCCESS':
-      console.log(`Creating Login success action in loginReducer with payload:${JSON.stringify(action.payload)}`)
       return {
         ...state,
         currentState: LoginStates.LOGIN_STATE_LOGGED_IN,
@@ -36,7 +34,6 @@ export function loginReducer(state = initialState, action) {
         loginTime: new Date(),
       };
     case 'LOGIN_FAILURE':
-      console.log(`Creating Login failure action in loginReducer with payload:${JSON.stringify(action.payload)}`)
       return {
         ...state,
         currentState: LoginStates.LOGIN_STATE_LOGGED_OUT,

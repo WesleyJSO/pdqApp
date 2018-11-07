@@ -1,18 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, View, Content, Form } from 'native-base'
+import { Container, View, Content, Form, Icon } from 'native-base'
 import { StyleSheet, SafeAreaView } from 'react-native'
 import { SearchOrdersStates } from '../../../constants/SearchOrdersConstants'
-import { createOrdersListRequestAction } from '../../../redux/actions/OrdersListAction'
+import { createSearchOrdersRequestAction } from '../../../redux/actions/SearchOrdersAction'
+import { createSearchOrdersMoveAction } from '../../../redux/actions/SearchOrdersAction'
 import _InfoPanel from '../../../components/_InfoPanel'
 import _Header from '../../../components/_Header'
 import _TextField from '../../../components/_TextField'
 import _Dropdown from '../../../components/_Dropdown'
 import _Button from '../../../components/_Button'
-import LinearGradient from 'react-native-linear-gradient'
+// import LinearGradient from 'react-native-linear-gradient'
   
 class SearchOrdersPage extends Component {
   static navigationOptions = {
+    drawerIcon: (
+      <Icon 
+        type="MaterialCommunityIcons"
+        name="book-open"
+        style={{ fontSize: 20, color: '#0d4c92'}}
+      />
+    ),
     title: 'Consultar Pedido'
   }
   /**
@@ -28,24 +36,34 @@ class SearchOrdersPage extends Component {
     super(props)
     this.state = {
       queryData: {},
-      initialData: {},
+      initialData: null,
       isWaitingResponse: props.isWaitingResponse,
       lastRequestError: null,
+      currentState: null,
+      ordersList: null,
     }
   }
-
   // action hapens every time the props growth
   componentWillReceiveProps(nextProps) {
     this.setState({
+      ordersList: nextProps.ordersList,
+      initialData: nextProps.initialData,
       isWaitingResponse: nextProps.isWaitingResponse,
       lastRequestError: nextProps.lastRequestError,
+      currentState: nextProps.currentState,
     })
   }
-  // add listenter here, this method confirm that the component has been created
   componentDidMount() {
+    if(!this.state.initialData) {
+      this.props.dispatchSearchOrdersMoveAction()
+    }
   }
-  
-  updateEmployee = v => { 
+  componentDidUpdate() {
+    if(this.state.currentState === SearchOrdersStates.SEARCH_ORDERS_SUCCEED) {
+      this.props.navigation.navigate('OrdersListPage', {ordersList: this.state.ordersList})
+    }
+  }
+  updateEmployee = v => {
     this.setState({ queryData: { ...this.state.queryData, employee: v } })
   }
   updateOrderNumber = v => { 
@@ -70,10 +88,10 @@ class SearchOrdersPage extends Component {
     this.setState({ queryData: { ...this.state.queryData, toDate: v } }) 
   }
   
-  goToOrdersListPage() {
-    this.props.dispatchOrdersListRequestAction(this.state.queryData)
-    this.props.navigation.navigate('OrdersListPage')
+  searchOrdersRequest() {
+    this.props.dispatchSearchOrdersRequestAction(this.state.queryData)
   }
+
   render() {
     return (
       <Container >
@@ -137,10 +155,11 @@ class SearchOrdersPage extends Component {
               
               <_Button
                 text={'Consultar'}
-                onPress={this.goToOrdersListPage.bind(this)}
+                onPress={this.searchOrdersRequest.bind(this)}
               />
 
               <_InfoPanel
+                message={'Houve um erro ao realizar a consulta.'}
                 pending={this.state.isWaitingResponse}
                 error={this.state.lastRequestError}
               />
@@ -160,19 +179,25 @@ function mapStateToProps(state) {
   return {
     initialData: state.searchOrdersReducer.initialData,
     queryData: state.searchOrdersReducer.queryData,
+    ordersList: state.searchOrdersReducer.ordersList,
 
     hasError: state.searchOrdersReducer.hasError,
     error: state.searchOrdersReducer.error,
-    isWaitingResponse: state.searchOrdersReducer.currentState === SearchOrdersStates.SEARCH_ORDERS_MOVE,
+    currentState: state.searchOrdersReducer.currentState,
+    isWaitingResponse: 
+      state.searchOrdersReducer.currentState === SearchOrdersStates.SEARCH_ORDERS_REQUESTED 
+      || state.searchOrdersReducer.currentState === SearchOrdersStates.SEARCH_ORDERS_MOVE,
     lastRequestError: state.searchOrdersReducer.hasError ? state.searchOrdersReducer.error : null
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {    
-    dispatchOrdersListRequestAction:(queryData) =>
-      dispatch(createOrdersListRequestAction(queryData)),
-      dispatch
+    dispatchSearchOrdersMoveAction: () =>
+      dispatch(createSearchOrdersMoveAction()),
+    dispatchSearchOrdersRequestAction:(queryData) =>
+      dispatch(createSearchOrdersRequestAction(queryData)),
+    dispatch
   }
 }
 

@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, Button, View, Container, Content } from 'native-base'
-import { Picker, TextInput, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native'
-import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
+import { Text, View, Container, Content } from 'native-base'
+import { StyleSheet, SafeAreaView } from 'react-native'
+import { Card, CardTitle, CardContent, CardAction, CardButton } from 'react-native-material-cards'
 import Modal from "react-native-modal"
 import { createOrderDetailApprovalRequestAction } from '../../../redux/actions/OrderDetailAction'
-import { SearchOrdersStates } from '../../../constants/SearchOrdersConstants'
-import { createSearchOrdersRequestAction } from '../../../redux/actions/SearchOrdersAction'
 import _Button from '../../../components/_Button'
 import _Header from '../../../components/_Header'
 
@@ -27,7 +25,6 @@ class OrderDetailPage extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      orderDetail: nextProps.orderDetail,
       isWaitingResponse: nextProps.isWaitingResponse,
       lastRequestError: nextProps.lastRequestError,
     })
@@ -50,11 +47,14 @@ class OrderDetailPage extends Component {
     this.props.navigation.navigate('OrdersListPage', { updatedOrderStatus: this.state.action })
 
   }
+  componentDidMount() {
+    this.setState({ orderDetail: this.props.navigation.getParam('orderDetail', '')})
+  }
   updatateModalVisibity = () => this.setState({ visibleModal: !this.state.visibleModal })
   upadateAction = v => this.setState({ action: v })
 
   render() {
-    const orderDetail = this.state.orderDetail
+    var orderDetail = this.state.orderDetail
     return (
       <Container>
         <_Header
@@ -91,6 +91,7 @@ class OrderDetailPage extends Component {
             <Card style={styles.card}>
               <View style={styles.viewCardTitle}>
                 <CardTitle 
+                  fontSize={20}
                   title={`${orderDetail.nomeCliente}`} 
                   subtitle={`${orderDetail.pedido} - ${orderDetail.status}`}
                 />
@@ -135,7 +136,7 @@ class OrderDetailPage extends Component {
                     <View style={styles.viewCardTitle}>
                       <CardTitle style={styles.cardTitle}
                         title={`${v.status}`}
-                        fontSize={15}
+                        fontSize={17}
 
                         subtitle={`Data da alteração: ${v.date}`}
                       />
@@ -161,8 +162,6 @@ class OrderDetailPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    orderDetail: state.orderDetailReducer.orderDetail,
-
     hasError: state.orderDetailReducer.hasError,
     errror: state.orderDetailReducer.errror,
     isWaitingResponse: state.orderDetailReducer.isWaitingResponse,

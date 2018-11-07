@@ -10,7 +10,6 @@ const initialState = {
 export function homeReducer(state = initialState, action) {
   switch (action.type) {
     case 'HOME_REQUEST':
-    console.log(`Creating home request in homeReducer with payload:${JSON.stringify(action.payload)}`)
       return {
         ...state,
         currentState: HomeStates.HOME_REQUEST,
@@ -18,7 +17,6 @@ export function homeReducer(state = initialState, action) {
         error: null
       }
     case 'HOME_SUCCESS':
-    console.log(`Creating home success in homeReducer with payload:${JSON.stringify(action.payload)}`)
       return {
         ...state,
         payloadData: action.payload,
@@ -27,7 +25,6 @@ export function homeReducer(state = initialState, action) {
         error: null
       }
     case 'HOME_FAILURE':
-      console.log(`Creating home failure in homeReducer with payload:${JSON.stringify(action.payload)}`)
       return {
         ...state,
         currentState: HomeStates.HOME_FAILED,

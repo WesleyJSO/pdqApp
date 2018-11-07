@@ -1,24 +1,22 @@
 /**
  * Creates an action for requesting searchOrders.
- * @param {*} queryData { rtv, orderNumber, regional, state, city, orderStatus, fromDate, toDate }
+ * @param {*} orderId
  */
-export function createOrdersListRequestAction(queryData) {
-  console.log(`ORDERS_LIST_REQUEST:${JSON.stringify(queryData)}`)
+export function createOrdersListRequestAction(orderId) {
   return {
     type: 'ORDERS_LIST_REQUEST',
-    payload: queryData
+    payload: orderId
   }
 }
 
 /**
- * Creates an action containing successful ordersList information.
- * @param {*} ordersList {}
+ * Creates an action containing successful orderDetail information.
+ * @param {*} orderDetail {}
  */
-export function createOrdersListSuccessAction(ordersList) {
-  console.log(`ORDERS_LIST_SUCCESS:${JSON.stringify(ordersList)}`)
+export function createOrdersListSuccessAction(orderDetail) {
   return {
     type: 'ORDERS_LIST_SUCCESS',
-    payload: ordersList
+    payload: orderDetail
   }
 }
 
@@ -27,7 +25,6 @@ export function createOrdersListSuccessAction(ordersList) {
  * @param {*} error {code, title, message, etc.}
  */
 export function createOrdersListFailureAction(error) {
-  console.log(`ORDERS_LIST_FAILURE:${JSON.stringify(error)}`)
   return {
     type: 'ORDERS_LIST_FAILURE',
     payload: error

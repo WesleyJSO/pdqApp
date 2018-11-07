@@ -17,7 +17,6 @@ class HomePage extends Component {
   };
 
   constructor(props) {
-    console.log(`HomePage constructor props: ${JSON.stringify(props)}`)
     super(props);
     this.state = {
       isLoggingOut:
@@ -29,7 +28,6 @@ class HomePage extends Component {
 
   
   componentWillReceiveProps(nextProps) {
-    console.log(`componentWillReceiveProps at HomePage nextProps: ${JSON.stringify(this.nextProps)}`)
     this.setState({
       isWaitingResponse: nextProps.isWaitingResponse,
       isLoggingOut: nextProps.currentState === LoginStates.LOGIN_STATE_LOGGING_OUT,
@@ -78,25 +76,6 @@ class HomePage extends Component {
                 </Right>
               )}
             </ListItem>
-            {/* <ListItem icon onPress={this.goToAbout.bind(this)}>
-              <Left>
-                <View style={styles.view}>
-                  <Icon
-                    type="MaterialCommunityIcons"
-                    name="information"
-                    style={{ fontSize: 24, color: Config.secondaryColorText }}
-                  />
-                </View>
-              </Left>
-              <Body>
-                <Text>Sobre</Text>
-              </Body>
-              {Platform.OS === 'ios' && (
-                <Right>
-                  <Icon type="Ionicons" name="ios-arrow-forward" />
-                </Right>
-              )}
-            </ListItem> */}
             <ListItem icon onPress={this.logout.bind(this)}>
               <Left>
                 <View style={styles.view}>

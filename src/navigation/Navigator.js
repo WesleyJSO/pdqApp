@@ -32,8 +32,13 @@ const CustomDrawerContentComponent = (props) => (
 
 const AppDrawerNavigator = DrawerNavigator(
   {
-    HomePage: { screen: HomePage },
+    // HomePage: { screen: HomePage },
     SearchOrdersPage: { screen: SearchOrdersPage },
+    LoginPage: {screen: LoginPage,
+      navigationOptions: {
+        drawerLabel: () => 'Sair',
+      }
+    },
     OrdersListPage: { screen: OrdersListPage,
       navigationOptions: {
         drawerLabel: () => null,
@@ -49,11 +54,6 @@ const AppDrawerNavigator = DrawerNavigator(
         drawerLabel: () => null,
       }
     },
-    ListPage: { screen: ListPage,
-      navigationOptions: {
-        drawerLabel: () => null,
-      }
-    },
     OrderDetailPage: { screen: OrderDetailPage,
       navigationOptions: {
         drawerLabel: () => null,
@@ -61,7 +61,8 @@ const AppDrawerNavigator = DrawerNavigator(
     },
   },
   {
-    initialRouteName: "HomePage",
+    drawerPosition: 'right',
+    initialRouteName: "SearchOrdersPage",
     contentComponent: CustomDrawerContentComponent
   }
 )
@@ -104,7 +105,6 @@ const StackNavigator = createStackNavigator(
     AboutPage: { screen: AboutPage },
   },
   {
-    // navigationOptions: ({ navigation }) => ({
     navigationOptions: {
       headerStyle: {
         backgroundColor: Config.primaryColor,
@@ -115,7 +115,6 @@ const StackNavigator = createStackNavigator(
         color: Config.primaryColorText,
       },
     },
-    // initialRouteKey: 'HomePage',
     initialRouteName: "Drawer",
     headerMode: "none",
   }
@@ -123,13 +122,10 @@ const StackNavigator = createStackNavigator(
 
 export class Navigator extends Component {
   render() {
-    // console.log(`Navigator props: ${JSON.stringify(this.props)}`)
-    console.log('ON NAVIGATION NOW')
     let loginState = this.props.state.loginReducer.currentState;
     let userAuthenticated =
       loginState === LoginStates.LOGIN_STATE_LOGGED_IN ||
       loginState === LoginStates.LOGIN_STATE_LOGGING_OUT;
-    // console.log(`USUARIO LOGADO: ${userAuthenticated}`)
 
     return userAuthenticated ? <AppDrawerNavigator /> : <LoginStackNavigator />;
   }

@@ -12,7 +12,7 @@ export function ordersListReducer(state = initialState, action) {
     case 'ORDERS_LIST_REQUEST':
       return {
         ...state,
-        queryData: action.payload.queryData,
+        orderId: action.payload.orderId,
         currentState: OrdersListStates.ORDERS_LIST_REQUESTED,
         hasError: false,
         error: null
@@ -20,7 +20,7 @@ export function ordersListReducer(state = initialState, action) {
     case 'ORDERS_LIST_SUCCESS':
       return {
         ...state,
-        ordersList: action.payload.ordersList,
+        orderDetail: action.payload,
         currentState: OrdersListStates.ORDERS_LIST_SUCCEED,
         hasError: false,
         error: null

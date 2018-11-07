@@ -19,13 +19,24 @@ export function createSearchOrdersMoveSuccessAction(initialData) {
 }
 
 /**
- * Creates an action containing successful searchOrders information.
- * @param {*} employeeList {id, nomeFuncionario.}
+ * Creates an action for requesting searchOrders.
+ * @param {*} queryData { rtv, orderNumber, regional, state, city, orderStatus, fromDate, toDate }
  */
-export function createSearchOrdersSuccessAction() {
-  console.log(`createSearchOrdersSuccessAction in SearchOrderAction`)
+export function createSearchOrdersRequestAction(queryData) {
   return {
-    type: 'SEARCH_ORDERS_SUCCESS'
+    type: 'SEARCH_ORDERS_REQUEST',
+    payload: queryData
+  }
+}
+
+/**
+ * Creates an action for requesting searchOrders.
+ * @param {*} queryData { rtv, orderNumber, regional, state, city, orderStatus, fromDate, toDate }
+ */
+export function createSearchOrdersSuccessAction(ordersList) {
+  return {
+    type: 'SEARCH_ORDERS_SUCCESS',
+    payload: ordersList
   }
 }
 
@@ -34,7 +45,6 @@ export function createSearchOrdersSuccessAction() {
  * @param {*} error {code, title, message, etc.}
  */
 export function createSearchOrdersFailureAction(error) {
-  console.log(`Creating search order failure action in SearchOrderAction with error:${JSON.stringify(error)}`)
   return {
     type: 'SEARCH_ORDERS_FAILURE',
     payload: error

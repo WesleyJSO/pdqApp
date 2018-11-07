@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, View, Content, Text } from 'native-base'
+import { Container, View, Content, Text, Icon } from 'native-base'
 import { TouchableOpacity, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import { OrdersListStates } from '../../../constants/OrdersListConstants'
 import _InfoPanel from '../../../components/_InfoPanel'
 import _Header from '../../../components/_Header'
 import _Button from '../../../components/_Button'
 import Modal from "react-native-modal"
-import { createOrderDetailRequestAction } from '../../../redux/actions/OrderDetailAction'
-import { ListItem } from 'react-native-elements'
+import { createOrdersListRequestAction } from '../../../redux/actions/OrdersListAction'
 
 class OrdersListPage extends Component {
   static navigationOptions = {
@@ -18,32 +17,41 @@ class OrdersListPage extends Component {
     super(props)
     this.state = {
       visibleModal: false,
-      ordersList: props.ordersList,
+      orderDetail: null,
+      ordersList: props.navigation.getParam('ordersList'),
       isWaitingResponse: props.isWaitingResponse,
-      lastRequestError: null
+      lastRequestError: null,
+      currentState: null,
+      updatedOrderStatus: null,
     }
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      ordersList: nextProps.ordersList,
+      orderDetail: nextProps.orderDetail,
+      currentState: nextProps.currentState,
       isWaitingResponse: nextProps.isWaitingResponse,
       lastRequestError: nextProps.lastRequestError
     })
   }
-
+  componentDidUpdate() {
+    if(this.state.currentState === OrdersListStates.ORDERS_LIST_SUCCEED) {
+      this.props.navigation.navigate('OrderDetailPage', {orderDetail: this.state.orderDetail})
+    }
+  }
   componentDidMount() {
-    let updatedOrderStatus = this.props.navigation.getParam('updatedOrderStatus', '')
-    if(updatedOrderStatus !== '') this.setState({ visibleModal: !this.state.visibleModal })
+    if(this.props.navigation.getParam('updatedOrderStatus', '')) {
+      this.setState({updatedOrderStatus: this.props.navigation.getParam('updatedOrderStatus', '')})
+      this.props.navigation.state.params.updatedOrderStatus = null
+      this.setState({ visibleModal: !this.state.visibleModal })
+    }
   }
   
   updatateModalVisibity = () => this.setState({ visibleModal: !this.state.visibleModal })
 
-  onPressItem (itemId) {
-    this.props.dispatchOrderDetailsAction(itemId)
-    this.props.navigation.navigate('OrderDetailPage')
+  ordersListRequest (itemId) {
+    this.props.dispatchOrdersListRequestAction(itemId)
   }
   render () {
-    const updatedOrderStatus = this.props.navigation.getParam('updatedOrderStatus', '')
     return (
       <Container>
         <_Header
@@ -52,6 +60,7 @@ class OrdersListPage extends Component {
         />
         <Content>
           <_InfoPanel
+            message={'Houve um erro ao realizar a consulta.'}
             pending={this.state.isWaitingResponse}
             error={this.state.lastRequestError}
           />
@@ -60,11 +69,11 @@ class OrdersListPage extends Component {
               isVisible={this.state.visibleModal === true}
               animationIn={'slideInDown'}
               animationOut={'slideOutDown'}
-              animationInTiming={500}
-              animationOutTiming={500}
+              animationInTiming={700}
+              animationOutTiming={700}
             >
               <View style={styles.modalContent}>
-                <Text>O pedido foi {updatedOrderStatus} com sucesso!</Text>
+                <Text>O pedido foi {this.state.updatedOrderStatus} com sucesso!</Text>
                 <View style={styles.modalButtons}>
                   <_Button 
                     text={'OK'}
@@ -80,7 +89,7 @@ class OrdersListPage extends Component {
                 style={styles.flatList}
                 data={this.state.ordersList}
                 renderItem={({item}) => 
-                  <TouchableOpacity onPress={() => this.onPressItem(item.id)}>
+                  <TouchableOpacity onPress={() => this.ordersListRequest(item.id)}>
                     <View style={styles.viewFlatListItem}>
                       <View style={styles.leftInfo}>
 
@@ -126,9 +135,11 @@ class OrdersListPage extends Component {
 function mapStateToProps(state) {
   return {
     ordersList: state.ordersListReducer.ordersList,
+    orderDetail: state.ordersListReducer.orderDetail,
     
     hasError: state.ordersListReducer.hasError,
     error: state.ordersListReducer.error,
+    currentState: state.ordersListReducer.currentState,
     isWaitingResponse: state.ordersListReducer.currentState === OrdersListStates.ORDERS_LIST_REQUESTED,
     lastRequestError: state.ordersListReducer.hasError ? state.ordersListReducer.error : null
   }
@@ -136,9 +147,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchOrderDetailsAction:(orderId) =>
-      dispatch(createOrderDetailRequestAction(orderId)),
-    dispatch
+    dispatchOrdersListRequestAction:(orderId) =>
+      dispatch(createOrdersListRequestAction(orderId)),
   }
 }
 

@@ -10,7 +10,6 @@ import { ActivityIndicator, StyleSheet, Alert } from 'react-native';
  *    that case, this field should contain {code, message}.
  */
 const InfoPanel = (props) => {
-    console.log(`Rendering InfoPanel with props: ${JSON.stringify(props)}`)
     return (
     <View
       style={{
@@ -39,8 +38,6 @@ const InfoPanel = (props) => {
               danger
               style={{ marginLeft: 15, marginRight: 15, alignSelf: 'center' }}
               onPressOut={() => {
-                console.log('Here is the error:');
-                console.log(JSON.stringify(props.error));
                 Alert.alert(
                   props.error.title || 'Erro desconhecido',
                   props.error.message || '[nenhuma mensagem informada]',

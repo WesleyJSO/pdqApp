@@ -1,4 +1,4 @@
-import { takeEvery, call, put } from 'redux-saga/effects'
+import { takeEvery, put } from 'redux-saga/effects'
 import { createHomeFailureAction, createHomeSuccessAction } from '../actions/HomeAction'
 import { delay } from 'redux-saga'
 
